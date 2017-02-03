@@ -1,0 +1,5 @@
+P: 7
+T: 10000
+mismatches: 0
+i: 2425
+time: 0.006402sec
