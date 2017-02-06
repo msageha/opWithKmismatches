@@ -1,7 +1,7 @@
 import random
 
-P = 7
-T = 10000
+P = 10
+T = 100000
 
 file = open('pattern.txt', 'w')
 for i in range(0, P):

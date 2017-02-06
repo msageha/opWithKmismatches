@@ -1,6 +1,6 @@
 #STchangeIndex.csvというST[i:i+m]からST[i+1:i+m+1]に変更されるときに，どのインデックスが変わったかを示しているcsvファイルを吐く
 import numpy as np
-SUPECIALCHAR = 10001
+SUPECIALCHAR = 100001
 K = 1 #mistakesNum
 
 with open('../PatternText/pattern.txt', 'r') as f:

@@ -1,6 +1,6 @@
 #Signature.csvというパターンとテキストの各部分文字列のシグネチャSPとSTを保存するスクリプト
 import numpy as np
-SUPECIALCHAR = 10001
+SUPECIALCHAR = 100001
 K = 1 #mistakesNum
 
 with open('../PatternText/pattern.txt', 'r') as f:

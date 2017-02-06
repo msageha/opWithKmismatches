@@ -2,8 +2,8 @@
 import numpy as np
 import time
 
-SUPECIALCHAR = 10001
-K = 2 #mistakesNum
+SUPECIALCHAR = 100001
+K = 1 #mistakesNum
 
 with open('../PatternText/pattern.txt', 'r') as f:
   P = np.array(list(map(int, f.read().splitlines())))

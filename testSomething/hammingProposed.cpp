@@ -2,12 +2,13 @@
 #include <iostream>
 #include <map>
 #include <sstream>
+#include <ctime>
 #include <vector>
 
-#define P 7
-#define T 10000
+#define P 10
+#define T 100000
 #define K 2
-#define $ 10001
+#define $ 100001
 
 using namespace std;
 
@@ -103,9 +104,9 @@ bool HammingUnder3K(map<int, int> &mp, vector<int> &SP, vector<vector<int>> &LCP
     int fragLen = FragLength(mp, it);
     int FragHamming = FragHDistance(index, (*it).second, fragLen, LCP);
     //デバッグ用の処理
-    //if((*(mp.begin())).first==2058) {
-    //  cout << "it.first=" << it->first << "\tit.second" << it->second << "\tFragHamming=" << FragHamming << "\t" << endl;
-    //}
+    // if((*(mp.begin())).first==311) {
+    //   cout << "it.first=" << it->first << "\tit.second" << it->second << "\tFragHamming=" << FragHamming << "\t" << endl;
+    // }
     //ここまで
     if(FragHamming == 0) {
       (*it).second = index;
@@ -121,7 +122,7 @@ bool HammingUnder3K(map<int, int> &mp, vector<int> &SP, vector<vector<int>> &LCP
     index += fragLen; //インデックスをフラグメントの長さ分すすめる
     hamming += FragHamming;
     //デバッグ用の処理
-    //if((*(mp.begin())).first==2058) cout << "hamming=" << hamming << endl;
+    //if((*(mp.begin())).first==311) cout << "hamming=" << hamming << endl;
     //ここまで
     if(hamming > 3*K) return false;
   }
@@ -173,24 +174,23 @@ int main() {
   vector<int> SP(P);
   vector<vector<int> > ST(T-P+1, vector<int> (P));
   if(readSignature("./Signature.csv", SP, ST) == -1) { return 1; }
-  //printVector(SP);
+  // printVector(SP);
   //printMatrix(ST);
   vector<vector<int>> STchangeIndex(T-P, vector<int> (P));
   if(readCSV("./STchangeIndex.csv", STchangeIndex) == -1) { return 1; }
   //printMatrix(STchangeIndex);
   vector<vector<int>> LCP(P, vector<int> (P));
   if(readCSV("./LCS.csv", LCP) == -1) { return 1; }
-  cout << "LCP\n" << endl;
-  printMatrix(LCP);
+  // printMatrix(LCP);
 
   map<int, int> mp;
   initializeFrag(mp, SP, ST[0]);
-  //printMap(mp);
+  // printMap(mp);
   map<int, int> SPValueIndex;
   MakeSPValueIndexMap(SPValueIndex, SP);
-  cout << "SPValueIndex\n" << endl;
-  printMap(SPValueIndex);
+  // printMap(SPValueIndex);
 
+  clock_t start = clock();
   if(HammingUnder3K(mp, SP, LCP)) {
     cout << 0 << endl;
   }
@@ -201,12 +201,11 @@ int main() {
         ChangeFrag(mp, j+i+1, insert);
       }
     }
-    int insertNum = insertValueSTi(SPValueIndex, ST[i+1][6]);
+    int insertNum = insertValueSTi(SPValueIndex, ST[i+1][P-1]);
     slideWindow(mp, i, insertNum);
-    if(HammingUnder3K(mp, SP, LCP)) {
-      cout << i+1 << endl;
-    }
+    if(HammingUnder3K(mp, SP, LCP)) cout << i+1 << endl;
   }
-
+  clock_t finish = clock();
+  cout << "time:::" << (double)(finish-start)/CLOCKS_PER_SEC << "sec" << endl;
   return 0;
 }
