@@ -25,21 +25,21 @@ with open('./PatternText/text.txt', 'r') as f:
   T = np.array(list(map(int, f.read().splitlines())))
 TLength = len(T)
 
-Tsub = np.zeros((TLength-PLength, PLength), dtype=int)
-for i in range(TLength-PLength):
+Tsub = np.zeros((TLength-PLength+1, PLength), dtype=int)
+for i in range(TLength-PLength+1):
   for j in range(PLength):
     Tsub[i][j] = T[i+j]
 
-predT = np.zeros((TLength-PLength, PLength), dtype=int)
+predT = np.zeros((TLength-PLength+1, PLength), dtype=int)
 
-for i in range(TLength-PLength):
+for i in range(TLength-PLength+1):
   pred = SUPECIALCHAR
   for j in Tsub[i].argsort():
     predT[i][j] = pred
     pred = i+j
 
-ST = np.zeros((TLength-PLength, PLength), dtype=int)
-for i in range(TLength-PLength):
+ST = np.zeros((TLength-PLength+1, PLength), dtype=int)
+for i in range(TLength-PLength+1):
   for j in range(PLength):
     if(predT[i][j]==SUPECIALCHAR):
       ST[i][j] = predT[i][j]
@@ -55,7 +55,7 @@ with open('./PatternText/predS.csv', 'w') as f:
   f.write('\nS(P),')
   writer.writerow(SP)
   f.write('\n')
-  for i in range(TLength-PLength):
+  for i in range(TLength-PLength+1):
     f.write('\nT[{}]-T[{}],'.format(i, i+PLength-1))
     writer.writerow(Tsub[i])
     f.write('\npred(T[{}]-T[{}]),'.format(i, i+PLength-1))
