@@ -7,7 +7,7 @@
 
 #define P 10
 #define T 100000
-#define K 2
+#define K 1
 #define $ 100001
 
 using namespace std;
@@ -172,7 +172,7 @@ void slideWindow(map<int, int> &mp, int index, int insertNum) { //ウィンド�
 
 int main() {
   vector<int> SP(P);
-  vector<vector<int> > ST(T-P+1, vector<int> (P));
+  vector<vector<int>> ST(T-P+1, vector<int> (P));
   if(readSignature("./Signature.csv", SP, ST) == -1) { return 1; }
   // printVector(SP);
   //printMatrix(ST);

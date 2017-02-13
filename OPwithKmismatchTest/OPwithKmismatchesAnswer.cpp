@@ -1,16 +1,45 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #include <bitset>
+#include <cassert>
+#include <ctime>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <time.h>
+#include <vector>
 
 #define P 10
 #define T 100000
-#define K 0
+#define K 1
+
 using namespace std;
+
+template <typename TKey>
+struct slice {
+private:
+  std::vector<TKey>* _vector = nullptr;
+  typename std::vector<TKey>::iterator _begin;
+  typename std::vector<TKey>::iterator _end;
+
+public:
+  slice() {
+  }
+  slice(std::vector<TKey> &vector, const int startIndex, const int endIndex) {
+    _vector = &vector;
+    _begin = vector.begin() + startIndex;
+    _end = vector.begin() + endIndex;
+  }
+
+  const TKey& at(const int index) const {
+    assert((int)std::distance(_begin, _end) >= index);
+    return *(_begin + index);
+  }
+
+  const TKey& operator [](const int index) const {
+    assert((int)std::distance(_begin, _end) >= index);
+    return *(_begin + index);
+  }
+};
 
 int nextIgnore(bitset <P> &ignoreIndexBit, int mistakesNum) { //無視するところは1が立つ
   if(mistakesNum==0) return 0; //mistakesNum==0のときだから
@@ -37,7 +66,7 @@ int readfile(string fileName, vector<int> &input) { //ファイルの読み込�
   return 0;
 }
 
-bool isomorphicWithKmismatches(vector <int> &pattern1, vector <int> &pattern2) {
+bool isomorphicWithKmismatches(vector<int> &pattern1, slice<int> &pattern2) {
   bitset <P> ignoreIndexBit;
   bool check = true;
   do{
@@ -58,27 +87,19 @@ bool isomorphicWithKmismatches(vector <int> &pattern1, vector <int> &pattern2) {
 }
 
 int main(int argc, char** argv) {
-  //ファイルの読み込み処理
   vector <int> pattern(P);
-  vector <int> textSubstring(P);
   vector <int> text(T);
+  vector <int> startIndex(T, 0);
   readfile("../PatternText/pattern.txt", pattern);
   readfile("../PatternText/text.txt", text);
-
-  ofstream file;
-  file.open(("../answerC/"+to_string(K)+".txt"), ios::trunc);
-  file << "P: " << P << "\nT: " << T << "\nmismatches: " << K << endl;
-  clock_t start = clock();
+  readfile("./hammingAnswerK=1.txt", startIndex);
   for(int i=0; i<T-P+1; i++) {
-    for(int j=0; j<P; j++) {
-      textSubstring[j] = text[i+j];
+    auto Ti = slice<int>(text, startIndex[i], startIndex[i]+P-1);
+    if(isomorphicWithKmismatches(pattern,Ti)) {
+      cout << "i: " << startIndex[i] << endl;
     }
-    if(isomorphicWithKmismatches(pattern,textSubstring)) {
-      file << "i: " << i << endl;
-    }
+    if(startIndex[i]==0) break;
   }
-  clock_t finish = clock();
-  file << "time: " << (double)(finish-start)/CLOCKS_PER_SEC << "sec" << endl;
-  file.close();
+
   return 0;
 }

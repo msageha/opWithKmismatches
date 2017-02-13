@@ -7,7 +7,7 @@
 
 #define P 10
 #define T 100000
-#define K 2
+#define K 1
 #define $ 100001
 
 using namespace std;

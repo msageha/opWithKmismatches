@@ -2,11 +2,12 @@ import numpy as np
 import itertools
 import time
 
-mismatches = 2
-with open('./PatternText/pattern.txt', 'r') as f:
+mismatches = 0
+
+with open('../PatternText/pattern.txt', 'r') as f:
   P = np.array(list(map(int, f.read().splitlines())))
 
-with open('./PatternText/text.txt', 'r') as f:
+with open('../PatternText/text.txt', 'r') as f:
   T = np.array(list(map(int, f.read().splitlines())))
 
 ans = np.zeros(len(T), dtype=list) #謎いことしてる
@@ -27,7 +28,7 @@ for i in range(TLength-PLength):
       ans[i] = K
       break
 finish = time.time()
-with open('answerPy/{}.txt'.format(mismatches), 'w') as f:
+with open('../answerPy/{}.txt'.format(mismatches), 'w') as f:
   f.write('P: {0}\nT: {1}\nmismatches: {2}\n'.format(PLength, TLength, mismatches))
   for i in range(len(T)):
     if(ans[i]):
