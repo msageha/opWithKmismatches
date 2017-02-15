@@ -8,7 +8,7 @@
 #define P 10
 #define T 100000
 #define K 1
-#define $ 100001
+#define $ -100001
 
 using namespace std;
 
@@ -185,11 +185,10 @@ int main() {
 
   map<int, int> mp; //フラグメント
   initializeFrag(mp, SP, ST[0]);
-  // printMap(mp);
+  printMap(mp);
+  cout << "--------------------" << endl;
   map<int, int> SPValueIndex;
   MakeSPValueIndexMap(SPValueIndex, SP);
-  // printMap(SPValueIndex);
-
   clock_t start = clock();
   if(HammingUnder3K(mp, SP, LCP)) {
     cout << 0 << endl;
@@ -201,8 +200,10 @@ int main() {
         ChangeFrag(mp, j+i+1, insert);
       }
     }
-    int insertNum = insertValueSTi(SPValueIndex, ST[i+1][P-1]);
+    int insertNum = insertValueSTi(SPValueIndex, ST[i+1][P-1]);//一番最後をinsertする処理
     slideWindow(mp, i, insertNum);
+    printMap(mp);
+    cout << "--------------------" << endl;
     if(HammingUnder3K(mp, SP, LCP)) cout << i+1 << endl;
   }
   clock_t finish = clock();

@@ -29,7 +29,7 @@ for i in range(len(P)):
     LCS[i][j+i] = count
     LCS[j+i][i] = count
 
-with open('LCS.csv', 'w') as f:
+with open('LCP.csv', 'w') as f:
   for i in range(len(P)):
     for j in range(len(P)):
       f.write(str(LCS[i][j]))

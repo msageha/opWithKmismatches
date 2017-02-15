@@ -54,7 +54,7 @@ void initializeSTi(set<pair<int, int>> &TiMap, vector<int> &predTi, vector<int> 
   }
 }
 
-void changePredS(vector<int> &predTi, vector<int> &STi, int insertIndex, int insertNum) { //predとSを変更するときに呼び出す関数．setにおいて削除するイテレータ，predに挿入するpairも入れる．
+void changePredS(vector<int> &predTi, vector<int> &STi, int insertIndex, int insertNum) { //predとSを変更するときに呼び出す関数．setにおいて削除するイテレータ，predに挿入するpairも入れる．insertIndexはPでmodを取っていない値を期待している
   predTi[insertIndex%P] = insertNum;
   if (insertNum != $) insertNum = insertNum - insertIndex; //predがSpecialCharacter($)のときはそのまま
   STi[insertIndex%P] = insertNum;
@@ -65,7 +65,7 @@ void removePrefix(set<pair<int, int>> &TiMap, vector<int> &predTi, vector<int> &
   assert(it != TiMap.end() && it->first == removeNum && it->second == index);
   TiMap.erase(it++);
   if (it != TiMap.end()) { //先頭の要素を指すpredがあるときということ．itは，Ti[index]よりも１つ大きい要素を指すイテレータ
-    changePredS(predTi, STi, (*it).second%P, predTi[index%P]);
+    changePredS(predTi, STi, (*it).second, predTi[index%P]);
   }
 }
 
@@ -86,6 +86,7 @@ void insertSuffix(set<pair<int, int>> &TiMap, vector<int> &predTi, vector<int> &
 
 void slideWindow(set<pair<int, int>> &TiMap, vector<int> &predTi, vector<int> &STi, vector<int> &Text, vector<int>::iterator TextIt) { //T[index:index+P-1]をT[index+1:index+P]にする
   int index = (int)distance(Text.begin(), TextIt); //現在参照しているindexをint型で取得 size_tからintにキャストしているからあまり良くない.
+  cout << index << endl;
   removePrefix(TiMap, predTi, STi, index, Text[index]);
   insertSuffix(TiMap, predTi, STi, index + 1, Text[index + P]);
 }
@@ -100,10 +101,13 @@ int main() {
   vector<int> STi(P);
   auto it = Text.begin();
   initializeSTi(TiMap, predTi, STi, Text, it);//predTiMap, predTi, STiの初期化
+  printSetPair(TiMap);
   printVector(predTi);
   for (int i = 0; i<T - P; i++) {
     slideWindow(TiMap, predTi, STi, Text, it);
-    printVector(predTi, i + 1);
+    printVector(STi, i + 1);
+    int a;
+    if(i>20) cin >> a;
     it++;
   }
   return 0;

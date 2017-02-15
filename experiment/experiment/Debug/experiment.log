@@ -1,0 +1,14 @@
+﻿  OPwithKmismatchesAnswer.cpp
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(56): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(59): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(69): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(70): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(75): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(241): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(283): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(284): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(291): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(292): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+d:\dropbox\卒論実験\experiment\experiment\opwithkmismatchesanswer.cpp(302): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+  experiment.vcxproj -> D:\Dropbox\卒論実験\experiment\Debug\experiment.exe
+  experiment.vcxproj -> D:\Dropbox\卒論実験\experiment\Debug\experiment.pdb (Partial PDB)

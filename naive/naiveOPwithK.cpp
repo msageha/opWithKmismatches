@@ -7,18 +7,27 @@
 #include <string>
 #include <time.h>
 
-#define P 10
-#define T 100000
-#define K 0
+#define DEBUG 
+#define P 8
 using namespace std;
+
+int m, n, K;
 
 int nextIgnore(bitset <P> &ignoreIndexBit, int mistakesNum) { //無視するところは1が立つ
   if(mistakesNum==0) return 0; //mistakesNum==0のときだから
   do {
     ignoreIndexBit = bitset<P>(ignoreIndexBit.to_ulong() + 1ULL);
-    if(ignoreIndexBit.count()==P) return 0;
+    if(ignoreIndexBit.count()==m) return 0;
   } while(ignoreIndexBit.count()!=mistakesNum);
   return 1;
+}
+
+void makeNextIgnore(vector<bitset<P>> &ignoreIndexVectorBit){
+  bitset <P> ignoreIndexBit;
+  while(nextIgnore(ignoreIndexBit, K)){
+    ignoreIndexVectorBit.push_back(ignoreIndexBit);
+  }
+  if(K==0) ignoreIndexVectorBit.push_back(ignoreIndexBit);
 }
 
 int readfile(string fileName, vector<int> &input) { //ファイルの読み込み関数
@@ -27,9 +36,8 @@ int readfile(string fileName, vector<int> &input) { //ファイルの読み込�
   string tmp;
   file.open(fileName);
   if(file.is_open()) {
-    for(int i=0; i<input.size(); i++) {
-      getline(file, tmp);
-      try {input[i] = stoi(tmp);}
+    while(getline(file, tmp)) {
+      try {input.push_back(stoi(tmp));}
       catch(invalid_argument e) {return -1;}
     }
   }else{return -1;}
@@ -37,12 +45,12 @@ int readfile(string fileName, vector<int> &input) { //ファイルの読み込�
   return 0;
 }
 
-bool isomorphicWithKmismatches(vector <int> &pattern1, vector <int> &pattern2) {
+bool isomorphicWithKmismatches(vector <int> &pattern1, vector <int> &pattern2, vector<bitset<P>> &ignoreIndexVectorBit) {
   bitset <P> ignoreIndexBit;
   bool check = true;
-  do{
+  for(auto ignoreIndexBit : ignoreIndexVectorBit){
     check = true;
-    for(int i=0; i<P; i++) {
+    for(int i=0; i<m; i++) {
       if(ignoreIndexBit[i]==1) continue;
       for(int j=0; j<P; j++) {
         if(ignoreIndexBit[j]==1) continue;
@@ -53,32 +61,38 @@ bool isomorphicWithKmismatches(vector <int> &pattern1, vector <int> &pattern2) {
       }
     }
     if(check) break;
-  }while(nextIgnore(ignoreIndexBit, K));
+  }
   return check;
 }
 
 int main(int argc, char** argv) {
   //ファイルの読み込み処理
-  vector <int> pattern(P);
-  vector <int> textSubstring(P);
-  vector <int> text(T);
-  readfile("../PatternText/pattern.txt", pattern);
-  readfile("../PatternText/text.txt", text);
-
+  vector <int> pattern;
+  vector <int> text;
+  readfile("pattern.txt", pattern);
+  readfile("text.txt", text);
+  m = pattern.size();
+  n = text.size();
+  vector <int> textSubstring(m);
   ofstream file;
-  file.open(("../answerC/"+to_string(K)+".txt"), ios::trunc);
-  file << "P: " << P << "\nT: " << T << "\nmismatches: " << K << endl;
-  clock_t start = clock();
-  for(int i=0; i<T-P+1; i++) {
-    for(int j=0; j<P; j++) {
-      textSubstring[j] = text[i+j];
+  for(K=0; K<=m/4; K++) {
+    vector<bitset<P>> ignoreIndexVectorBit;
+    makeNextIgnore(ignoreIndexVectorBit);
+    file.open(("answer"+to_string(K)+".txt"), ios::trunc);
+    file << "m: " << m << "\nT: " << n << "\nmismatches: " << K << endl;
+    clock_t start = clock();
+    for(int i=0; i<n-m+1; i++) {
+      //DEBUG cout << i << endl;
+      for(int j=0; j<m; j++) {
+        textSubstring[j] = text[i+j];
+      }
+      if(isomorphicWithKmismatches(pattern,textSubstring, ignoreIndexVectorBit)) {
+        DEBUG file << i << endl;
+      }
     }
-    if(isomorphicWithKmismatches(pattern,textSubstring)) {
-      file << "i: " << i << endl;
-    }
+    clock_t finish = clock();
+    file << "time: " << (double)(finish-start)/CLOCKS_PER_SEC << "sec" << endl;
+    file.close();
   }
-  clock_t finish = clock();
-  file << "time: " << (double)(finish-start)/CLOCKS_PER_SEC << "sec" << endl;
-  file.close();
   return 0;
 }

@@ -1,4 +1,4 @@
-P: 10
-T: 100000
+m: 16
+T: 1000000
 mismatches: 0
-time: 0.11628sec
+time: 1.80097sec
